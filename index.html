@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LinkedIn Sign Up</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    #status { margin-top: 20px; font-weight: bold; color: green; }
+  </style>
+</head>
+<body>
+  <h1 id="welcome">Welcome!</h1>
+  <p id="info"></p>
+  <p id="status"></p> <!-- ✅ Status message -->
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get("name");
+    const email = urlParams.get("email");
+    const title = urlParams.get("title");
+    const url = urlParams.get("url");
+
+    if (name && email) {
+      document.getElementById("welcome").textContent = `Welcome, ${name}!`;
+      document.getElementById("info").innerHTML = `
+        <strong>Email:</strong> ${email}<br>
+        <strong>Job Title:</strong> ${title}<br>
+        <strong>LinkedIn:</strong> <a href="${url}" target="_blank">${url}</a>
+      `;
+
+      // Send data to Google Sheet
+      fetch("YOUR_GOOGLE_SCRIPT_WEB_APP_URL", {
+        method: "POST",
+        body: JSON.stringify({ name, email, title, url }),
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => res.text())
+        .then((msg) => {
+          console.log("Google Sheet response:", msg);
+          document.getElementById("status").textContent =
+            "✅ Your information has been saved successfully!";
+        })
+        .catch((err) => {
+          console.error("Error sending to Google Sheet:", err);
+          document.getElementById("status").textContent =
+            "❌ There was a problem saving your info. Please try again.";
+          document.getElementById("status").style.color = "red";
+        });
+    }
+  </script>
+</body>
+</html>
