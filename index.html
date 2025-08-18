@@ -29,7 +29,7 @@
       `;
 
       // Send data to Google Sheet
-      fetch("YOUR_GOOGLE_SCRIPT_WEB_APP_URL", {
+      fetch("https://script.google.com/a/macros/samsara.com/s/AKfycbwksXbqspTQmXl7iXI-znV-9MxFsJ0xiQYqxXD5tNjv0GdjpvK9kT12YBxsYBS0_FOX/exec", {
         method: "POST",
         body: JSON.stringify({ name, email, title, url }),
         headers: { "Content-Type": "application/json" },
